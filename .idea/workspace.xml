@@ -14,6 +14,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -70,6 +71,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ActivityserviceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.FitnessMicroserviceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.UserserviceApplication.executor&quot;: &quot;Run&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
@@ -94,6 +96,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.fitness.activityservice.service" />
+      <recent name="com.fitness.activityservice.dto" />
+      <recent name="com.fitness.activityservice.model" />
       <recent name="com.fitness.userservice.dto" />
       <recent name="com.fitness.userservice.model" />
     </key>
@@ -112,6 +117,7 @@
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
+              <entry key="ActivityserviceApplication" value="STOPPED" />
               <entry key="UserserviceApplication" value="STOPPED" />
             </map>
           </value>
@@ -119,7 +125,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.UserserviceApplication">
+  <component name="RunManager" selected="Spring Boot.ActivityserviceApplication">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="fitness-microservice" />
       <method v="2">
@@ -134,6 +140,13 @@
     <configuration name="ActivityserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="activityservice" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.activityservice.ActivityserviceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserserviceApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="userservice (1)" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.userservice.UserserviceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -161,7 +174,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1773892855628</updated>
-      <workItem from="1773892857691" duration="8270000" />
+      <workItem from="1773892857691" duration="16207000" />
     </task>
     <task id="LOCAL-00001" summary="Build the user service">
       <option name="closed" value="true" />
