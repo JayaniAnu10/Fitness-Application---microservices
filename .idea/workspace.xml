@@ -4,48 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="549749b3-ba79-4fe9-9380-49e8805062ef" name="Changes" comment="Build the activity service">
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/WebClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/UserValidationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/config/MongoConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/controller/RecommendationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/model/Recommendation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/repository/RecommendationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/RecommendationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/src/main/java/com/server/eureka/EurekaApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka/src/test/java/com/server/eureka/EurekaApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="549749b3-ba79-4fe9-9380-49e8805062ef" name="Changes" comment="Build the ai service">
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/RabbitMqConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/config/RabbitMqConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/model/Activity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/UserserviceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/dto/RegisterRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/dto/UserResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/model/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/model/UserRole.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitness/userservice/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/fitness/userservice/FitnessMicroserviceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +119,7 @@
       <recent name="com.fitness.userservice.model" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.fitness.aiservice.model" />
       <recent name="com.fitness.aiservice.config" />
     </key>
   </component>
@@ -195,6 +167,10 @@
       </method>
     </configuration>
     <configuration name="AiserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="GEMINI_API_URL" value="https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=" />
+        <env name="GEMINI_API_KEY" value="AIzaSyDxLMejutvzh4Md5pGIWQyEjpPUJphsbhs" />
+      </envs>
       <module name="aiservice" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.aiservice.AiserviceApplication" />
       <method v="2">
@@ -215,6 +191,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Spring Boot.ActivityserviceApplication" />
+      <item itemvalue="Spring Boot.AiserviceApplication" />
+      <item itemvalue="Spring Boot.EurekaApplication" />
+      <item itemvalue="Spring Boot.UserserviceApplication" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -234,7 +216,7 @@
       <workItem from="1773892857691" duration="16207000" />
       <workItem from="1773929878408" duration="6609000" />
       <workItem from="1773937112435" duration="3850000" />
-      <workItem from="1773977930035" duration="7208000" />
+      <workItem from="1773977930035" duration="21396000" />
     </task>
     <task id="LOCAL-00001" summary="Build the user service">
       <option name="closed" value="true" />
@@ -260,7 +242,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773930068299</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Build the ai service">
+      <option name="closed" value="true" />
+      <created>1773987232826</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1773987232826</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,7 +262,8 @@
     </ignored-roots>
     <MESSAGE value="Build the user service" />
     <MESSAGE value="Build the activity service" />
-    <option name="LAST_COMMIT_MESSAGE" value="Build the activity service" />
+    <MESSAGE value="Build the ai service" />
+    <option name="LAST_COMMIT_MESSAGE" value="Build the ai service" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fitness_microservice$ActivityserviceApplication.ic" NAME="ActivityserviceApplication Coverage Results" MODIFIED="1773936624263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
