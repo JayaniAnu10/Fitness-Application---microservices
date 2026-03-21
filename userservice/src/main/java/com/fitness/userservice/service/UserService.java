@@ -30,17 +30,29 @@ public class UserService {
     public UserResponse register(RegisterRequest request) {
 
         if(userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already in use");
+            User existingUser = userRepository.findByEmail(request.getEmail());
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(existingUser.getId());
+            userResponse.setKeyclockId(existingUser.getKeyclockId());
+            userResponse.setFirstName(existingUser.getFirstName());
+            userResponse.setLastName(existingUser.getLastName());
+            userResponse.setEmail(existingUser.getEmail());
+            userResponse.setPassword(existingUser.getPassword());
+            userResponse.setCreatedDate(existingUser.getCreatedDate());
+            userResponse.setUpdatedDate(existingUser.getUpdatedDate());
+            return userResponse;
         }
         User user= new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+        user.setKeyclockId(request.getKeyclockId());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
 
         User savedUser = userRepository.save(user);
         UserResponse userResponse = new UserResponse();
         userResponse.setId(savedUser.getId());
+        userResponse.setKeyclockId(savedUser.getKeyclockId());
         userResponse.setFirstName(savedUser.getFirstName());
         userResponse.setLastName(savedUser.getLastName());
         userResponse.setEmail(savedUser.getEmail());
@@ -52,6 +64,6 @@ public class UserService {
 
     public Boolean existByUserId(String userId) {
         log.info("calling existByUserId {}", userId);
-        return userRepository.existsById(userId);
+        return userRepository.existsByKeyclockId(userId);
     }
 }
