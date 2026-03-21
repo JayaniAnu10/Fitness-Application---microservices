@@ -4,19 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="549749b3-ba79-4fe9-9380-49e8805062ef" name="Changes" comment="Build the ai service">
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/RabbitMqConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/config/RabbitMqConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/model/Activity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" afterDir="false" />
+    <list default="true" id="549749b3-ba79-4fe9-9380-49e8805062ef" name="Changes" comment="Build the processing of recommendations.">
+      <change afterPath="$PROJECT_DIR$/configserver/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/src/main/java/com/fitness/configserver/ConfigserverApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/src/main/resources/config/activity-service.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/src/main/resources/config/ai-service.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/src/main/resources/config/user-service.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/src/test/java/com/fitness/configserver/ConfigserverApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aiservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +98,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.ActivityserviceApplication.executor": "Run",
     "Spring Boot.AiserviceApplication.executor": "Run",
+    "Spring Boot.ConfigserverApplication.executor": "Run",
     "Spring Boot.EurekaApplication.executor": "Run",
     "Spring Boot.FitnessMicroserviceApplication.executor": "Run",
     "Spring Boot.UserserviceApplication.executor": "Run",
@@ -95,7 +107,7 @@
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/fitness-microservice",
+    "last_opened_file_path": "D:/fitness-microservice/configserver/src/main/resources/config",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -118,6 +130,9 @@
       <recent name="com.fitness.userservice.dto" />
       <recent name="com.fitness.userservice.model" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\fitness-microservice\configserver\src\main\resources\config" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.fitness.aiservice.model" />
       <recent name="com.fitness.aiservice.config" />
@@ -137,8 +152,9 @@
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
-              <entry key="ActivityserviceApplication" value="STOPPED" />
+              <entry key="ActivityserviceApplication" value="FAILED" />
               <entry key="AiserviceApplication" value="STOPPED" />
+              <entry key="ConfigserverApplication" value="STOPPED" />
               <entry key="EurekaApplication" value="STOPPED" />
               <entry key="UserserviceApplication" value="STOPPED" />
             </map>
@@ -147,7 +163,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.AiserviceApplication">
+  <component name="RunManager" selected="Spring Boot.ActivityserviceApplication">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="fitness-microservice" />
       <method v="2">
@@ -177,6 +193,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ConfigserverApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="configserver" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.configserver.ConfigserverApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="EurekaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="eureka" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.server.eureka.EurekaApplication" />
@@ -192,6 +215,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Spring Boot.ConfigserverApplication" />
       <item itemvalue="Spring Boot.ActivityserviceApplication" />
       <item itemvalue="Spring Boot.AiserviceApplication" />
       <item itemvalue="Spring Boot.EurekaApplication" />
@@ -217,6 +241,8 @@
       <workItem from="1773929878408" duration="6609000" />
       <workItem from="1773937112435" duration="3850000" />
       <workItem from="1773977930035" duration="21396000" />
+      <workItem from="1774060380262" duration="105000" />
+      <workItem from="1774060511720" duration="2142000" />
     </task>
     <task id="LOCAL-00001" summary="Build the user service">
       <option name="closed" value="true" />
@@ -250,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773987232826</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Build the processing of recommendations.">
+      <option name="closed" value="true" />
+      <created>1774060440797</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774060440797</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,7 +297,8 @@
     <MESSAGE value="Build the user service" />
     <MESSAGE value="Build the activity service" />
     <MESSAGE value="Build the ai service" />
-    <option name="LAST_COMMIT_MESSAGE" value="Build the ai service" />
+    <MESSAGE value="Build the processing of recommendations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Build the processing of recommendations." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fitness_microservice$ActivityserviceApplication.ic" NAME="ActivityserviceApplication Coverage Results" MODIFIED="1773936624263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
