@@ -5,6 +5,7 @@ export const authConfig = {
   tokenEndpoint:
     "http://localhost:8181/realms/fitness-oauth2/protocol/openid-connect/token",
   redirectUri: "http://localhost:5173/",
+  autoLogin: false,
   scope: "openid profile email offline_access",
   onRefreshTokenExpire: (event: { logIn: () => void }) => event.logIn(),
 };

@@ -6,6 +6,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -16,48 +17,55 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@Order(1)
 public class KeycloakUserSyncFilter implements WebFilter {
     private final UserService userService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
         String userId = exchange.getRequest().getHeaders().getFirst("X-User-ID");
-        String token = exchange.getRequest().getHeaders().getFirst("Authorization");
-        RegisterRequest registerRequest = getUserDetails(token);
 
-        if(userId==null){
-            userId=registerRequest.getKeyclockId();
+        // If no Authorization header is present, pass through (let SecurityConfig handle it)
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return chain.filter(exchange);
         }
 
-        if(userId!=null && token!=null){
-            String finalUserId = userId;
-            return userService.validateUser(userId)
-                    .flatMap(exist->{
-                        if(!exist){
+        RegisterRequest registerRequest = getUserDetails(authHeader);
 
-                            if(registerRequest!=null){
-                                return userService.registerUser(registerRequest)
-                                        .then(Mono.empty());
-                            }else{
-                                return Mono.empty();
-                            }
+        // Resolve userId from JWT sub if header not provided
+        if (userId == null && registerRequest != null) {
+            userId = registerRequest.getKeyclockId();
+        }
 
-                        }else{
-                            return Mono.empty();
+        if (userId != null && registerRequest != null) {
+            final String finalUserId = userId;
+            final RegisterRequest finalRegisterRequest = registerRequest;
+
+            return userService.validateUser(finalUserId)
+                    .flatMap(exists -> {
+                        if (!exists) {
+                            log.info("User {} not found in DB, auto-registering", finalUserId);
+                            return userService.registerUser(finalRegisterRequest)
+                                    .doOnSuccess(u -> log.info("Auto-registered user: {}", u.getEmail()))
+                                    .doOnError(e -> log.error("Failed to auto-register user {}: {}", finalUserId, e.getMessage()))
+                                    .onErrorResume(e -> Mono.empty()); // don't block the request on register failure
                         }
+                        return Mono.empty();
                     })
-                    .then(Mono.defer(()->{
+                    .then(Mono.defer(() -> {
                         ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
                                 .header("X-User-ID", finalUserId)
                                 .build();
                         return chain.filter(exchange.mutate().request(mutatedRequest).build());
                     }));
         }
+
         return chain.filter(exchange);
     }
 
     private RegisterRequest getUserDetails(String token) {
-        try{
+        try {
             String tokenWithoutBearer = token.replace("Bearer ", "").trim();
             SignedJWT signedJWT = SignedJWT.parse(tokenWithoutBearer);
             JWTClaimsSet claims = signedJWT.getJWTClaimsSet();
@@ -69,10 +77,9 @@ public class KeycloakUserSyncFilter implements WebFilter {
             registerRequest.setFirstName(claims.getStringClaim("given_name"));
             registerRequest.setLastName(claims.getStringClaim("family_name"));
             return registerRequest;
-
-        }catch(Exception e){
-            e.printStackTrace();
-            return  null;
+        } catch (Exception e) {
+            log.error("Failed to parse JWT token: {}", e.getMessage());
+            return null;
         }
     }
 }

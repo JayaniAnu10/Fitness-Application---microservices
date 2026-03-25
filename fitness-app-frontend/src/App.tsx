@@ -60,12 +60,6 @@ function App() {
     }
   }, [token, tokenData, dispatch]);
 
-  useEffect(() => {
-    if (!token && !loginInProgress) {
-      logIn();
-    }
-  }, [token, loginInProgress, logIn]);
-
   const handleLogout = () => {
     dispatch(logout());
     logOut();
@@ -75,13 +69,21 @@ function App() {
     <Router>
       {!token ? (
         <main className="login-state">
-          <Typography variant="h5" component="h2">
-            Redirecting to Keycloak login...
-          </Typography>
-          {error ? <p className="error-text">{error}</p> : null}
-          <Button variant="contained" onClick={() => logIn()}>
-            Login Now
-          </Button>
+          {loginInProgress ? (
+            <Typography variant="h5" component="h2">
+              Completing login, please wait…
+            </Typography>
+          ) : (
+            <>
+              <Typography variant="h5" component="h2">
+                Welcome to Fitness Tracker
+              </Typography>
+              {error ? <p className="error-text">{error}</p> : null}
+              <Button variant="contained" onClick={() => logIn()}>
+                Login with Keycloak
+              </Button>
+            </>
+          )}
         </main>
       ) : (
         <main className="app-shell">
