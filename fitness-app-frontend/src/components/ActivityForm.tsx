@@ -2,6 +2,23 @@ import { useContext, useMemo, useState } from "react";
 import { AuthContext } from "react-oauth2-code-pkce";
 import { addActivity } from "../api/fitnessApi";
 import type { ActivityRequest, ActivityType } from "../types/fitness";
+import { Alert } from "./ui/alert";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 const ACTIVITY_TYPES: ActivityType[] = [
   "RUNNING",
@@ -90,63 +107,87 @@ function ActivityForm() {
   };
 
   return (
-    <section className="card">
-      <h2>Add Activity</h2>
-      <form className="activity-form" onSubmit={handleSubmit}>
-        <label>
-          Activity Type
-          <select
-            value={form.type}
-            onChange={(event) => onChange("type", event.target.value)}
-          >
-            {ACTIVITY_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type.replace("_", " ")}
-              </option>
-            ))}
-          </select>
-        </label>
+    <Card>
+      <CardHeader>
+        <CardTitle>Add Activity</CardTitle>
+        <CardDescription>
+          Capture your workout details to feed analytics and AI recommendations.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form className="activity-form" onSubmit={handleSubmit}>
+          <label className="form-field">
+            Activity Type
+            <Select
+              value={form.type}
+              onValueChange={(value) => {
+                if (value) {
+                  onChange("type", value);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select an activity type" />
+              </SelectTrigger>
+              <SelectContent>
+                {ACTIVITY_TYPES.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type.replace("_", " ")}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </label>
 
-        <label>
-          Duration (minutes)
-          <input
-            type="number"
-            min={1}
-            value={form.duration}
-            onChange={(event) => onChange("duration", event.target.value)}
-            required
-          />
-        </label>
+          <label className="form-field">
+            Duration (minutes)
+            <Input
+              type="number"
+              min={1}
+              value={form.duration}
+              onChange={(event) => onChange("duration", event.target.value)}
+              required
+            />
+          </label>
 
-        <label>
-          Calories Burned
-          <input
-            type="number"
-            min={0}
-            value={form.caloriesBurned}
-            onChange={(event) => onChange("caloriesBurned", event.target.value)}
-            required
-          />
-        </label>
+          <label className="form-field">
+            Calories Burned
+            <Input
+              type="number"
+              min={0}
+              value={form.caloriesBurned}
+              onChange={(event) =>
+                onChange("caloriesBurned", event.target.value)
+              }
+              required
+            />
+          </label>
 
-        <label>
-          Start Time
-          <input
-            type="datetime-local"
-            value={form.startTime}
-            onChange={(event) => onChange("startTime", event.target.value)}
-            required
-          />
-        </label>
+          <label className="form-field">
+            Start Time
+            <Input
+              type="datetime-local"
+              value={form.startTime}
+              onChange={(event) => onChange("startTime", event.target.value)}
+              required
+            />
+          </label>
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save Activity"}
-        </button>
-      </form>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "Save Activity"}
+          </Button>
+        </form>
 
-      {statusMessage ? <p className="status-text">{statusMessage}</p> : null}
-      {errorMessage ? <p className="error-text">{errorMessage}</p> : null}
-    </section>
+        <div className="message-stack">
+          {statusMessage ? (
+            <Alert className="alert-success">{statusMessage}</Alert>
+          ) : null}
+          {errorMessage ? (
+            <Alert variant="destructive">{errorMessage}</Alert>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

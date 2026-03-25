@@ -2,6 +2,16 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "react-oauth2-code-pkce";
 import { getUserProfile, registerUser } from "../api/fitnessApi";
 import type { RegisterRequest, UserProfile } from "../types/fitness";
+import { Alert } from "./ui/alert";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
 
 type FormState = {
   firstName: string;
@@ -10,7 +20,11 @@ type FormState = {
   password: string;
 };
 
-function UserProfilePage() {
+type UserProfilePageProps = {
+  mode?: "profile" | "register";
+};
+
+function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
   const { token, tokenData } = useContext(AuthContext);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -120,95 +134,118 @@ function UserProfilePage() {
 
   if (loading) {
     return (
-      <section className="card">
-        <h2>User Profile</h2>
-        <p>Loading profile...</p>
-      </section>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            {mode === "register" ? "Register User" : "User Profile"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>Loading profile...</p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <section className="card profile-card">
-      <h2>User Profile</h2>
+    <Card className="profile-card">
+      <CardHeader>
+        <CardTitle>
+          {mode === "register" ? "User Registration" : "User Profile"}
+        </CardTitle>
+        <CardDescription className="hint-text">
+          {mode === "register"
+            ? "Create your userservice profile to sync identity details and unlock activity tracking."
+            : "View your registered userservice profile details and identity mapping."}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {error ? <Alert variant="destructive">{error}</Alert> : null}
+        {status ? <Alert className="alert-success">{status}</Alert> : null}
 
-      {error ? <p className="error-text">{error}</p> : null}
-      {status ? <p className="status-text">{status}</p> : null}
+        {profile && mode === "profile" ? (
+          <div className="profile-grid">
+            <p>
+              <strong>First name:</strong> {profile.firstName}
+            </p>
+            <p>
+              <strong>Last name:</strong> {profile.lastName}
+            </p>
+            <p>
+              <strong>Email:</strong> {profile.email}
+            </p>
+            <p>
+              <strong>Keycloak ID:</strong> {profile.keyclockId}
+            </p>
+            <p>
+              <strong>Created:</strong>{" "}
+              {new Date(profile.createdDate).toLocaleString()}
+            </p>
+            <p>
+              <strong>Updated:</strong>{" "}
+              {new Date(profile.updatedDate).toLocaleString()}
+            </p>
+          </div>
+        ) : (
+          <form className="profile-form" onSubmit={onSubmit}>
+            {profile ? (
+              <p className="hint-text">
+                A profile already exists for this user. Submit again only if you
+                need to re-register.
+              </p>
+            ) : (
+              <p className="hint-text">
+                No userservice profile found for your account. Complete
+                registration below.
+              </p>
+            )}
 
-      {profile ? (
-        <div className="profile-grid">
-          <p>
-            <strong>First name:</strong> {profile.firstName}
-          </p>
-          <p>
-            <strong>Last name:</strong> {profile.lastName}
-          </p>
-          <p>
-            <strong>Email:</strong> {profile.email}
-          </p>
-          <p>
-            <strong>Keycloak ID:</strong> {profile.keyclockId}
-          </p>
-          <p>
-            <strong>Created:</strong>{" "}
-            {new Date(profile.createdDate).toLocaleString()}
-          </p>
-          <p>
-            <strong>Updated:</strong>{" "}
-            {new Date(profile.updatedDate).toLocaleString()}
-          </p>
-        </div>
-      ) : (
-        <form className="profile-form" onSubmit={onSubmit}>
-          <p>
-            No userservice profile found for your account. Complete registration
-            below.
-          </p>
+            <label className="form-field">
+              First Name
+              <Input
+                value={form.firstName}
+                onChange={(event) => onChange("firstName", event.target.value)}
+                required
+              />
+            </label>
 
-          <label>
-            First Name
-            <input
-              value={form.firstName}
-              onChange={(event) => onChange("firstName", event.target.value)}
-              required
-            />
-          </label>
+            <label className="form-field">
+              Last Name
+              <Input
+                value={form.lastName}
+                onChange={(event) => onChange("lastName", event.target.value)}
+                required
+              />
+            </label>
 
-          <label>
-            Last Name
-            <input
-              value={form.lastName}
-              onChange={(event) => onChange("lastName", event.target.value)}
-              required
-            />
-          </label>
+            <label className="form-field">
+              Email
+              <Input
+                type="email"
+                value={form.email}
+                onChange={(event) => onChange("email", event.target.value)}
+                required
+              />
+            </label>
 
-          <label>
-            Email
-            <input
-              type="email"
-              value={form.email}
-              onChange={(event) => onChange("email", event.target.value)}
-              required
-            />
-          </label>
+            <label className="form-field">
+              Password (userservice profile)
+              <Input
+                type="password"
+                value={form.password}
+                onChange={(event) => onChange("password", event.target.value)}
+                minLength={6}
+                required
+              />
+            </label>
 
-          <label>
-            Password (userservice profile)
-            <input
-              type="password"
-              value={form.password}
-              onChange={(event) => onChange("password", event.target.value)}
-              minLength={6}
-              required
-            />
-          </label>
-
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Registering..." : "Register Profile"}
-          </button>
-        </form>
-      )}
-    </section>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Registering..." : "Register Profile"}
+            </Button>
+          </form>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
