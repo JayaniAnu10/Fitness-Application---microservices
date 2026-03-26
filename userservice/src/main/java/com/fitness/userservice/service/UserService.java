@@ -15,9 +15,27 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse getUserProfile(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("user not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not found"));
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
+        userResponse.setKeyclockId(user.getKeyclockId());
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPassword(user.getPassword());
+        userResponse.setCreatedDate(user.getCreatedDate());
+        userResponse.setUpdatedDate(user.getUpdatedDate());
+        return userResponse;
+    }
+
+    public UserResponse getUserProfileByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("user not found");
+        }
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setKeyclockId(user.getKeyclockId());
         userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
         userResponse.setEmail(user.getEmail());
@@ -29,7 +47,7 @@ public class UserService {
 
     public UserResponse register(RegisterRequest request) {
 
-        if(userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             User existingUser = userRepository.findByEmail(request.getEmail());
             UserResponse userResponse = new UserResponse();
             userResponse.setId(existingUser.getId());
@@ -42,7 +60,7 @@ public class UserService {
             userResponse.setUpdatedDate(existingUser.getUpdatedDate());
             return userResponse;
         }
-        User user= new User();
+        User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setKeyclockId(request.getKeyclockId());
@@ -65,5 +83,36 @@ public class UserService {
     public Boolean existByUserId(String userId) {
         log.info("calling existByUserId {}", userId);
         return userRepository.existsByKeyclockId(userId);
+    }
+
+    public UserResponse updateKeycloakIdByEmail(String email, String keycloakId) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found for email: " + email);
+        }
+        if (user.getKeyclockId() == null || user.getKeyclockId().isBlank()) {
+            user.setKeyclockId(keycloakId);
+            User updatedUser = userRepository.save(user);
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(updatedUser.getId());
+            userResponse.setKeyclockId(updatedUser.getKeyclockId());
+            userResponse.setFirstName(updatedUser.getFirstName());
+            userResponse.setLastName(updatedUser.getLastName());
+            userResponse.setEmail(updatedUser.getEmail());
+            userResponse.setPassword(updatedUser.getPassword());
+            userResponse.setCreatedDate(updatedUser.getCreatedDate());
+            userResponse.setUpdatedDate(updatedUser.getUpdatedDate());
+            return userResponse;
+        }
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setKeyclockId(user.getKeyclockId());
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPassword(user.getPassword());
+        userResponse.setCreatedDate(user.getCreatedDate());
+        userResponse.setUpdatedDate(user.getUpdatedDate());
+        return userResponse;
     }
 }
