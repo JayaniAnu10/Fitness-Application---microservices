@@ -9,9 +9,11 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
+    @NotBlank(message = "First name is required")
     private String firstName;
+
+    @NotBlank(message = "Last name is required")
     private String lastName;
-    private String keyclockId;
 
     @NotBlank(message = "Email is needed")
     @Email(message = "Invalid email format")
@@ -20,5 +22,4 @@ public class RegisterRequest {
     @NotBlank(message = "Password is required")
     @Size(min=6,message = "Password must have at least 6 characters")
     private String password;
-
 }

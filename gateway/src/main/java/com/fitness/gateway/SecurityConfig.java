@@ -25,8 +25,9 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .pathMatchers("/api/users/register", "/api/users/register/**").permitAll()
-                        .pathMatchers(HttpMethod.PATCH, "/api/users/update-keycloak-id").authenticated()
+                        // Registration endpoint - public access (no auth required)
+                        .pathMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                        // All other endpoints require authentication
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
