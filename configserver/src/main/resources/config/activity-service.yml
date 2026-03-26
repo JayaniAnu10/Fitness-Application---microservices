@@ -1,0 +1,20 @@
+server:
+  port: 8082
+
+spring:
+  data:
+    mongodb:
+      uri: ${ACTIVITY_MONGODB_URI:mongodb://localhost:27017/fitness_activity_db}
+
+rabbitmq:
+  exchange:
+    name: ${RABBITMQ_EXCHANGE:fitness.activity.exchange}
+  queue:
+    name: ${RABBITMQ_QUEUE_ACTIVITY:fitness.activity.queue}
+  routing:
+    key: ${RABBITMQ_ROUTING_KEY:fitness.activity.created}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}

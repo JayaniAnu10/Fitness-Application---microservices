@@ -1,0 +1,25 @@
+server:
+  port: 8083
+
+spring:
+  data:
+    mongodb:
+      uri: ${AI_MONGODB_URI:mongodb://localhost:27017/fitness_ai_db}
+
+gemini:
+  api:
+    url: ${GEMINI_API_URL:https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=}
+    key: ${GEMINI_API_KEY:YOUR_GEMINI_API_KEY}
+
+rabbitmq:
+  exchange:
+    name: ${RABBITMQ_EXCHANGE:fitness.activity.exchange}
+  queue:
+    name: ${RABBITMQ_QUEUE_AI:fitness.ai.queue}
+  routing:
+    key: ${RABBITMQ_ROUTING_KEY:fitness.activity.created}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
