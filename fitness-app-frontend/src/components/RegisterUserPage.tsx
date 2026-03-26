@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useContext, useState } from "react";
+import { AuthContext } from "react-oauth2-code-pkce";
 import { registerUser } from "../api/fitnessApi";
-import type { RegisterRequest, UserProfile } from "../types/fitness";
+import type { RegisterRequest } from "../types/fitness";
 import { Alert } from "./ui/alert";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -14,12 +14,10 @@ type FormState = {
 };
 
 function RegisterUserPage() {
+  const { logIn } = useContext(AuthContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
-  const [createdProfile, setCreatedProfile] = useState<UserProfile | null>(
-    null,
-  );
 
   const [form, setForm] = useState<FormState>({
     firstName: "",
@@ -32,13 +30,17 @@ function RegisterUserPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const onLoginClick = () => {
+    window.sessionStorage.setItem("postLoginRoute", "/activities");
+    logIn();
+  };
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setIsSubmitting(true);
     setError(null);
     setStatus(null);
-    setCreatedProfile(null);
 
     const payload: RegisterRequest = {
       firstName: form.firstName.trim(),
@@ -48,11 +50,8 @@ function RegisterUserPage() {
     };
 
     try {
-      const profile = await registerUser(payload);
-      setCreatedProfile(profile);
-      setStatus(
-        "Account created successfully! You can now log in with your credentials.",
-      );
+      await registerUser(payload);
+      setStatus("Registration successful.");
       setForm({ firstName: "", lastName: "", email: "", password: "" });
     } catch (submitError) {
       const message =
@@ -70,9 +69,13 @@ function RegisterUserPage() {
       <aside className="register-side-panel">
         <h2>Get Started</h2>
         <p>Already have an account?</p>
-        <Link to="/activities" className="register-side-link">
+        <button
+          type="button"
+          className="register-side-link"
+          onClick={onLoginClick}
+        >
           Log in
-        </Link>
+        </button>
       </aside>
 
       <section className="register-form-panel">
@@ -133,24 +136,6 @@ function RegisterUserPage() {
             {isSubmitting ? "Creating user..." : "Sign Up"}
           </Button>
         </form>
-
-        {createdProfile ? (
-          <div className="register-result-card">
-            <p>
-              <strong>Account Created!</strong>
-            </p>
-            <p>
-              Email: <strong>{createdProfile.email}</strong>
-            </p>
-            <p className="register-result-hint">
-              Please log in with Keycloak to complete your profile setup and
-              activate your account.
-            </p>
-            <Link to="/" className="list-link-action">
-              Proceed to Login
-            </Link>
-          </div>
-        ) : null}
       </section>
     </div>
   );

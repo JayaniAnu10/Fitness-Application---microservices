@@ -1,6 +1,18 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router";
 import { AuthContext } from "react-oauth2-code-pkce";
+import {
+  ArrowLeft,
+  Calendar,
+  CalendarClock,
+  Dumbbell,
+  Flame,
+  Lightbulb,
+  ShieldCheck,
+  Sparkles,
+  Timer,
+  TrendingUp,
+} from "lucide-react";
 import { getActivityById, getRecommendationsByUser } from "../api/fitnessApi";
 import type { ActivityResponse, Recommendation } from "../types/fitness";
 import { Alert } from "./ui/alert";
@@ -109,51 +121,96 @@ function ActivityDetails() {
   }, [id, token, userId]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Activity Details</CardTitle>
-        <CardDescription>
-          Detailed snapshot for one recorded session.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Link to="/activities" className="back-link">
-          Back to activities
-        </Link>
+    <div className="activity-details-shell">
+      <Link to="/activities" className="back-link activity-details-back-link">
+        <ArrowLeft size={16} />
+        Back to activities
+      </Link>
 
-        {loading ? (
-          <p className="hint-text">Loading activity details...</p>
-        ) : null}
-        {error ? <Alert variant="destructive">{error}</Alert> : null}
+      {loading ? (
+        <p className="hint-text">Loading activity details...</p>
+      ) : null}
+      {error ? <Alert variant="destructive">{error}</Alert> : null}
 
-        {activity ? (
-          <>
-            <div className="details-grid">
-              <p>
-                <strong>Type:</strong> {activity.type.replace("_", " ")}
-              </p>
-              <p>
-                <strong>Duration:</strong> {activity.duration} min
-              </p>
-              <p>
-                <strong>Calories:</strong> {activity.caloriesBurned} kcal
-              </p>
-              <p>
-                <strong>Start time:</strong>{" "}
-                {new Date(activity.startTime).toLocaleString()}
-              </p>
-              <p>
-                <strong>Created:</strong>{" "}
-                {new Date(activity.createdAt).toLocaleString()}
-              </p>
-              <p>
-                <strong>Updated:</strong>{" "}
-                {new Date(activity.updatedAt).toLocaleString()}
-              </p>
-            </div>
+      {activity ? (
+        <>
+          <Card className="activity-details-card">
+            <CardHeader>
+              <CardTitle>Activity Details</CardTitle>
+              <CardDescription>
+                Overview of your selected workout session.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="activity-summary-grid">
+                <article className="activity-summary-item">
+                  <Dumbbell size={18} />
+                  <div>
+                    <span>Type</span>
+                    <strong>{activity.type.replace("_", " ")}</strong>
+                  </div>
+                </article>
 
-            <section className="activity-recommendations">
-              <h3>AI Recommendations</h3>
+                <article className="activity-summary-item">
+                  <Timer size={18} />
+                  <div>
+                    <span>Duration</span>
+                    <strong>{activity.duration} min</strong>
+                  </div>
+                </article>
+
+                <article className="activity-summary-item">
+                  <Flame size={18} />
+                  <div>
+                    <span>Calories</span>
+                    <strong>{activity.caloriesBurned} kcal</strong>
+                  </div>
+                </article>
+
+                <article className="activity-summary-item">
+                  <CalendarClock size={18} />
+                  <div>
+                    <span>Start Time</span>
+                    <strong>
+                      {new Date(activity.startTime).toLocaleString()}
+                    </strong>
+                  </div>
+                </article>
+
+                <article className="activity-summary-item">
+                  <Calendar size={18} />
+                  <div>
+                    <span>Created</span>
+                    <strong>
+                      {new Date(activity.createdAt).toLocaleString()}
+                    </strong>
+                  </div>
+                </article>
+
+                <article className="activity-summary-item">
+                  <Calendar size={18} />
+                  <div>
+                    <span>Updated</span>
+                    <strong>
+                      {new Date(activity.updatedAt).toLocaleString()}
+                    </strong>
+                  </div>
+                </article>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="activity-ai-card">
+            <CardHeader>
+              <CardTitle className="activity-ai-title">
+                <Sparkles size={18} />
+                AI Recommendations
+              </CardTitle>
+              <CardDescription>
+                Personalized guidance generated for this specific activity.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
               {recommendationsLoading ? (
                 <p className="hint-text">Loading recommendations...</p>
               ) : null}
@@ -169,49 +226,66 @@ function ActivityDetails() {
                 </div>
               ) : null}
 
-              <div className="recommendation-list">
+              <div className="activity-ai-list">
                 {recommendations.map((recommendation) => (
-                  <article
-                    key={recommendation.id}
-                    className="recommendation-card recommendation-inline-card"
-                  >
-                    <h4>{recommendation.activityType}</h4>
-                    <p>{recommendation.recommendation}</p>
+                  <article key={recommendation.id} className="activity-ai-item">
+                    <header className="activity-ai-item-header">
+                      <h4>{recommendation.activityType}</h4>
+                    </header>
 
-                    <h5>Improvements</h5>
-                    <ul>
-                      {recommendation.improvements?.map((item) => (
-                        <li key={`${recommendation.id}-improvement-${item}`}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="activity-ai-main-text">
+                      {recommendation.recommendation}
+                    </p>
 
-                    <h5>Suggestions</h5>
-                    <ul>
-                      {recommendation.suggestions?.map((item) => (
-                        <li key={`${recommendation.id}-suggestion-${item}`}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                    <section className="activity-ai-section">
+                      <h5>
+                        <TrendingUp size={14} />
+                        Improvements
+                      </h5>
+                      <ul>
+                        {recommendation.improvements?.map((item) => (
+                          <li key={`${recommendation.id}-improvement-${item}`}>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
 
-                    <h5>Safety</h5>
-                    <ul>
-                      {recommendation.safety?.map((item) => (
-                        <li key={`${recommendation.id}-safety-${item}`}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                    <section className="activity-ai-section">
+                      <h5>
+                        <Lightbulb size={14} />
+                        Suggestions
+                      </h5>
+                      <ul>
+                        {recommendation.suggestions?.map((item) => (
+                          <li key={`${recommendation.id}-suggestion-${item}`}>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+
+                    <section className="activity-ai-section">
+                      <h5>
+                        <ShieldCheck size={14} />
+                        Safety
+                      </h5>
+                      <ul>
+                        {recommendation.safety?.map((item) => (
+                          <li key={`${recommendation.id}-safety-${item}`}>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
                   </article>
                 ))}
               </div>
-            </section>
-          </>
-        ) : null}
-      </CardContent>
-    </Card>
+            </CardContent>
+          </Card>
+        </>
+      ) : null}
+    </div>
   );
 }
 

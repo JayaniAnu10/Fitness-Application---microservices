@@ -47,7 +47,7 @@ const AppHeader = ({ onLogout }: { onLogout: () => void }) => (
 );
 
 const ActivitiesPage = () => (
-  <section className="content-grid">
+  <section className="content-grid activities-page">
     <ActivityForm />
     <ActivityList />
   </section>
