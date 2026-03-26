@@ -1,17 +1,17 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "react-oauth2-code-pkce";
-import { getUserProfile, registerUser } from "../api/fitnessApi";
+import {
+  getUserProfile,
+  getUserProfileByEmail,
+  registerUser,
+  updateKeycloakId,
+} from "../api/fitnessApi";
 import type { RegisterRequest, UserProfile } from "../types/fitness";
 import { Alert } from "./ui/alert";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
+import profileAvatar from "../assets/profile-avatar.svg";
 
 type FormState = {
   firstName: string;
@@ -61,7 +61,7 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
     let mounted = true;
 
     const fetchProfile = async () => {
-      if (!token || !keyclockId) {
+      if (!token) {
         setLoading(false);
         return;
       }
@@ -70,11 +70,50 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
       setError(null);
 
       try {
-        const data = await getUserProfile(keyclockId, token);
-        if (!mounted) {
+        let data: UserProfile | null = null;
+
+        if (tokenData?.email) {
+          try {
+            data = await getUserProfileByEmail(tokenData.email, token);
+          } catch (emailErr) {
+            console.warn(
+              "Profile not found by email, trying by keycloak ID...",
+            );
+            // Email lookup failed, try keycloak ID
+            if (keyclockId) {
+              data = await getUserProfile(keyclockId, token);
+            }
+          }
+        } else if (keyclockId) {
+          // No email in token, try keycloak ID
+          data = await getUserProfile(keyclockId, token);
+        }
+
+        if (!mounted || !data) {
+          setLoading(false);
           return;
         }
+
         setProfile(data);
+
+        if (
+          data &&
+          keyclockId &&
+          (!data.keyclockId || data.keyclockId.trim() === "")
+        ) {
+          try {
+            const updatedProfile = await updateKeycloakId(
+              data.email,
+              keyclockId,
+              token,
+            );
+            if (mounted) {
+              setProfile(updatedProfile);
+            }
+          } catch (updateErr) {
+            console.warn("Failed to update keycloak ID:", updateErr);
+          }
+        }
       } catch (err) {
         if (mounted) {
           const message =
@@ -93,7 +132,7 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
     return () => {
       mounted = false;
     };
-  }, [token, keyclockId]);
+  }, [token, tokenData?.email, keyclockId]);
 
   const onChange = (name: keyof FormState, value: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -101,11 +140,6 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (!token || !keyclockId) {
-      setError("Missing authentication token or user id.");
-      return;
-    }
 
     setIsSubmitting(true);
     setError(null);
@@ -116,11 +150,10 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
       lastName: form.lastName,
       email: form.email,
       password: form.password,
-      keyclockId,
     };
 
     try {
-      const data = await registerUser(payload, token);
+      const data = await registerUser(payload);
       setProfile(data);
       setStatus("Profile registered successfully.");
     } catch (err) {
@@ -134,7 +167,7 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
 
   if (loading) {
     return (
-      <Card>
+      <div className="profile-page-root">
         <CardHeader>
           <CardTitle>
             {mode === "register" ? "Register User" : "User Profile"}
@@ -143,20 +176,18 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
         <CardContent>
           <p>Loading profile...</p>
         </CardContent>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="profile-card">
+    <div className="profile-page-root">
       <CardHeader>
-        <CardTitle>
-          {mode === "register" ? "User Registration" : "User Profile"}
-        </CardTitle>
+        <CardTitle>{mode === "register" ? "User Registration" : ""}</CardTitle>
         <CardDescription className="hint-text">
           {mode === "register"
             ? "Create your userservice profile to sync identity details and unlock activity tracking."
-            : "View your registered userservice profile details and identity mapping."}
+            : ""}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -164,27 +195,45 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
         {status ? <Alert className="alert-success">{status}</Alert> : null}
 
         {profile && mode === "profile" ? (
-          <div className="profile-grid">
-            <p>
-              <strong>First name:</strong> {profile.firstName}
-            </p>
-            <p>
-              <strong>Last name:</strong> {profile.lastName}
-            </p>
-            <p>
-              <strong>Email:</strong> {profile.email}
-            </p>
-            <p>
-              <strong>Keycloak ID:</strong> {profile.keyclockId}
-            </p>
-            <p>
-              <strong>Created:</strong>{" "}
-              {new Date(profile.createdDate).toLocaleString()}
-            </p>
-            <p>
-              <strong>Updated:</strong>{" "}
-              {new Date(profile.updatedDate).toLocaleString()}
-            </p>
+          <div className="profile-modern-card">
+            <div className="profile-modern-top">
+              <img
+                src={profileAvatar}
+                alt="Profile"
+                className="profile-avatar-image"
+              />
+              <h3 className="profile-full-name">
+                {profile.firstName} {profile.lastName}
+              </h3>
+              <p className="profile-email">{profile.email}</p>
+            </div>
+
+            <div className="profile-modern-grid">
+              <article className="profile-stat-card">
+                <span>First Name</span>
+                <strong>{profile.firstName}</strong>
+              </article>
+              <article className="profile-stat-card">
+                <span>Last Name</span>
+                <strong>{profile.lastName}</strong>
+              </article>
+              <article className="profile-stat-card">
+                <span>Keycloak ID</span>
+                <strong>{profile.keyclockId || "Not linked yet"}</strong>
+              </article>
+              <article className="profile-stat-card">
+                <span>Created</span>
+                <strong>
+                  {new Date(profile.createdDate).toLocaleString()}
+                </strong>
+              </article>
+              <article className="profile-stat-card">
+                <span>Updated</span>
+                <strong>
+                  {new Date(profile.updatedDate).toLocaleString()}
+                </strong>
+              </article>
+            </div>
           </div>
         ) : (
           <form className="profile-form" onSubmit={onSubmit}>
@@ -245,7 +294,7 @@ function UserProfilePage({ mode = "profile" }: UserProfilePageProps) {
           </form>
         )}
       </CardContent>
-    </Card>
+    </div>
   );
 }
 

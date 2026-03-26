@@ -117,7 +117,7 @@ function ActivityForm() {
       <CardContent>
         <form className="activity-form" onSubmit={handleSubmit}>
           <label className="form-field">
-            Activity Type
+            <span className="form-field-label">Activity Type</span>
             <Select
               value={form.type}
               onValueChange={(value) => {
@@ -139,32 +139,34 @@ function ActivityForm() {
             </Select>
           </label>
 
-          <label className="form-field">
-            Duration (minutes)
-            <Input
-              type="number"
-              min={1}
-              value={form.duration}
-              onChange={(event) => onChange("duration", event.target.value)}
-              required
-            />
-          </label>
+          <div className="activity-form-row">
+            <label className="form-field">
+              <span className="form-field-label">Duration (minutes)</span>
+              <Input
+                type="number"
+                min={1}
+                value={form.duration}
+                onChange={(event) => onChange("duration", event.target.value)}
+                required
+              />
+            </label>
+
+            <label className="form-field">
+              <span className="form-field-label">Calories Burned</span>
+              <Input
+                type="number"
+                min={0}
+                value={form.caloriesBurned}
+                onChange={(event) =>
+                  onChange("caloriesBurned", event.target.value)
+                }
+                required
+              />
+            </label>
+          </div>
 
           <label className="form-field">
-            Calories Burned
-            <Input
-              type="number"
-              min={0}
-              value={form.caloriesBurned}
-              onChange={(event) =>
-                onChange("caloriesBurned", event.target.value)
-              }
-              required
-            />
-          </label>
-
-          <label className="form-field">
-            Start Time
+            <span className="form-field-label">Start Time</span>
             <Input
               type="datetime-local"
               value={form.startTime}
@@ -173,7 +175,11 @@ function ActivityForm() {
             />
           </label>
 
-          <Button type="submit" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="activity-submit-btn"
+          >
             {isSubmitting ? "Saving..." : "Save Activity"}
           </Button>
         </form>

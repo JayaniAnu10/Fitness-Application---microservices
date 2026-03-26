@@ -118,9 +118,24 @@ export async function getUserProfile(
   return (await response.json()) as UserProfile;
 }
 
+export async function getUserProfileByEmail(
+  email: string,
+  token: string,
+): Promise<UserProfile> {
+  return fetchJson<UserProfile>(
+    `/api/users/by-email?email=${encodeURIComponent(email)}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    "Failed to load profile by email",
+  );
+}
+
 export async function registerUser(
   payload: RegisterRequest,
-  token: string,
 ): Promise<UserProfile> {
   return fetchJson<UserProfile>(
     "/api/users/register",
@@ -128,11 +143,28 @@ export async function registerUser(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        "X-User-ID": payload.keyclockId,
       },
       body: JSON.stringify(payload),
     },
     "Failed to register user",
+  );
+}
+
+export async function updateKeycloakId(
+  email: string,
+  keycloakId: string,
+  token: string,
+): Promise<UserProfile> {
+  return fetchJson<UserProfile>(
+    "/api/users/update-keycloak-id",
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email, keycloakId }),
+    },
+    "Failed to update keycloak ID",
   );
 }

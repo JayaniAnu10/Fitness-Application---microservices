@@ -3,17 +3,20 @@ import { AuthContext } from "react-oauth2-code-pkce";
 import { useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
+  Link,
   NavLink,
   Navigate,
   Route,
   Routes,
+  useLocation,
 } from "react-router";
 import { logout, setCredentials } from "./store/authSlice";
 import ActivityForm from "./components/ActivityForm";
 import ActivityList from "./components/ActivityList";
 import ActivityDetails from "./components/ActivityDetails";
-import RecommendationList from "./components/RecommendationList";
+import RegisterUserPage from "./components/RegisterUserPage";
 import UserProfilePage from "./components/UserProfilePage";
+import loginHeroImage from "./assets/image.svg";
 import { Alert } from "./components/ui/alert";
 import { Button } from "./components/ui/button";
 import {
@@ -33,13 +36,10 @@ const AppHeader = ({ onLogout }: { onLogout: () => void }) => (
       <NavLink to="/activities" className="nav-pill">
         Activities
       </NavLink>
-      <NavLink to="/recommendations" className="nav-pill">
-        AI Insights
-      </NavLink>
       <NavLink to="/profile" className="nav-pill">
         Profile
       </NavLink>
-      <Button variant="outline" onClick={onLogout}>
+      <Button variant="outline" className="logout-button" onClick={onLogout}>
         Logout
       </Button>
     </nav>
@@ -83,69 +83,130 @@ function App() {
     return "/activities";
   };
 
-  return (
-    <Router>
-      {!token ? (
-        <main className="login-state">
-          <Card className="login-hero">
-            <CardContent>
-              <p className="brand-kicker">Train Smart. Recover Better.</p>
-              {loginInProgress ? (
-                <CardTitle>Completing login, please wait...</CardTitle>
-              ) : (
-                <>
-                  <CardTitle className="hero-title">
-                    Fitness activity, AI guidance, and profile tracking in one
-                    place
-                  </CardTitle>
-                  <CardDescription className="hero-copy">
-                    Sign in with Keycloak to add activities, generate
-                    recommendations, and manage your user registration profile.
-                  </CardDescription>
-                  {error ? <Alert variant="destructive">{error}</Alert> : null}
-                  <div className="hero-actions">
-                    <Button
-                      onClick={() => beginLoginFlow("/activities")}
-                      size="lg"
-                    >
-                      Login with Keycloak
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      onClick={() => beginLoginFlow("/register")}
-                      size="lg"
-                    >
-                      Register Profile
-                    </Button>
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-        </main>
-      ) : (
-        <main className="app-shell">
-          <AppHeader onLogout={handleLogout} />
-          <section className="page-frame">
-            <Routes>
-              <Route path="/activities" element={<ActivitiesPage />} />
-              <Route path="/activities/:id" element={<ActivityDetails />} />
-              <Route path="/recommendations" element={<RecommendationList />} />
-              <Route
-                path="/register"
-                element={<UserProfilePage mode="register" />}
-              />
-              <Route path="/profile" element={<UserProfilePage />} />
-              <Route
-                path="/"
-                element={<Navigate to={getPostLoginRoute()} replace />}
-              />
-            </Routes>
-          </section>
-        </main>
-      )}
-    </Router>
+  const AuthenticatedApp = () => {
+    const location = useLocation();
+    const isRegisterPage = location.pathname === "/register";
+    const isProfilePage = location.pathname === "/profile";
+
+    return (
+      <main className={isRegisterPage ? "register-route-shell" : "app-shell"}>
+        {!isRegisterPage ? <AppHeader onLogout={handleLogout} /> : null}
+        <section
+          className={
+            isRegisterPage
+              ? "register-route-frame"
+              : isProfilePage
+                ? "page-frame page-frame--plain"
+                : "page-frame"
+          }
+        >
+          <Routes>
+            <Route path="/activities" element={<ActivitiesPage />} />
+            <Route path="/activities/:id" element={<ActivityDetails />} />
+            <Route
+              path="/recommendations"
+              element={<Navigate to="/activities" replace />}
+            />
+            <Route path="/register" element={<RegisterUserPage />} />
+            <Route path="/profile" element={<UserProfilePage />} />
+            <Route
+              path="/"
+              element={<Navigate to={getPostLoginRoute()} replace />}
+            />
+          </Routes>
+        </section>
+      </main>
+    );
+  };
+
+  const PublicApp = () => (
+    <Routes>
+      <Route
+        path="/register"
+        element={
+          <main className="register-route-shell">
+            <section className="register-route-frame">
+              <RegisterUserPage />
+            </section>
+          </main>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <main className="login-state">
+            <Card className="login-hero">
+              <CardContent className="login-hero-content">
+                <div className="login-layout">
+                  <section className="login-visual" aria-hidden="true">
+                    <div className="login-visual-overlay" />
+                    <img
+                      src={loginHeroImage}
+                      alt=""
+                      className="login-illustration"
+                    />
+                  </section>
+                  <section className="login-panel">
+                    <h2 className="login-brand">FitTrack</h2>
+                    {loginInProgress ? (
+                      <CardTitle>Completing login, please wait...</CardTitle>
+                    ) : (
+                      <>
+                        <CardTitle className="hero-title">
+                          Train smart. Stay strong.
+                        </CardTitle>
+                        <CardDescription className="hero-copy">
+                          Track workouts, get AI insights, and keep your
+                          progress in one place.
+                        </CardDescription>
+                        <div className="hero-metrics" aria-hidden="true">
+                          <article className="hero-metric-card">
+                            <span>Target</span>
+                            <strong>5 sessions / week</strong>
+                          </article>
+                          <article className="hero-metric-card">
+                            <span>Insights</span>
+                            <strong>AI recommendations</strong>
+                          </article>
+                          <article className="hero-metric-card">
+                            <span>Tracking</span>
+                            <strong>Calories + duration</strong>
+                          </article>
+                        </div>
+                        {error ? (
+                          <Alert variant="destructive">{error}</Alert>
+                        ) : null}
+                        <div className="hero-actions">
+                          <Button
+                            onClick={() => beginLoginFlow("/activities")}
+                            size="lg"
+                            className="h-11 px-7 text-base"
+                          >
+                            Login
+                          </Button>
+                          <Link to="/register" className="hero-register-link">
+                            <Button
+                              variant="secondary"
+                              size="lg"
+                              className="h-11 px-7 text-base"
+                            >
+                              Register
+                            </Button>
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </section>
+                </div>
+              </CardContent>
+            </Card>
+          </main>
+        }
+      />
+    </Routes>
   );
+
+  return <Router>{token ? <AuthenticatedApp /> : <PublicApp />}</Router>;
 }
 
 export default App;

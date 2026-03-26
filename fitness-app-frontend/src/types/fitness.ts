@@ -46,7 +46,6 @@ export type Recommendation = {
 export type RegisterRequest = {
   firstName: string;
   lastName: string;
-  keyclockId: string;
   email: string;
   password: string;
 };

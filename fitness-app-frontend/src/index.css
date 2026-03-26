@@ -19,7 +19,7 @@
   --primary-600: #14213d;
   --primary-500: #14213d;
   --primary-100: #e5e5e5;
-  --danger: #000000;
+  --danger: #b91c1c;
   --success: #14213d;
   --radius: 0.625rem;
   --shadow-soft: 0 14px 35px rgba(0, 0, 0, 0.16);
@@ -35,7 +35,7 @@
   --muted: #e5e5e5;
   --accent: #fca311;
   --accent-foreground: #000000;
-  --destructive: #000000;
+  --destructive: #b91c1c;
   --input: #e5e5e5;
   --ring: #fca311;
   --chart-1: #14213d;
@@ -143,11 +143,45 @@ a {
   background: #fca311;
 }
 
+.logout-button {
+  border-color: transparent;
+  background: linear-gradient(135deg, #1d4e89 0%, #2563eb 100%);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.logout-button:hover {
+  background: linear-gradient(135deg, #153b68 0%, #1d4ed8 100%);
+  color: #ffffff;
+}
+
+.logout-button:focus-visible {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+}
+
 .page-frame {
   border-radius: 20px;
   border: 1px solid #e5e5e5;
   background: rgba(255, 255, 255, 0.85);
   padding: 12px;
+}
+
+.page-frame--plain {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.register-route-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.register-route-frame {
+  width: min(1060px, 96vw);
 }
 
 .content-grid {
@@ -164,8 +198,117 @@ a {
 }
 
 .login-hero {
-  width: min(720px, 100%);
+  width: min(1120px, 100%);
+  overflow: hidden;
   animation: fade-up 280ms ease;
+}
+
+.login-hero-content {
+  padding: 0;
+}
+
+.login-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+}
+
+.login-panel {
+  background: linear-gradient(160deg, #ffffff 0%, #fafafa 65%, #f1f1f1 100%);
+  color: #14213d;
+  border-right: 1px solid #e5e5e5;
+  padding: 42px 38px;
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  position: relative;
+}
+
+.login-brand {
+  margin: 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #14213d;
+}
+
+.login-panel .brand-kicker {
+  color: #14213d;
+  opacity: 1;
+}
+
+.login-panel .hero-title {
+  color: #14213d;
+}
+
+.login-panel .hero-copy {
+  color: #14213d;
+  max-width: 42ch;
+  font-size: 0.98rem;
+  opacity: 0.78;
+}
+
+.hero-metrics {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hero-metric-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 9px 11px;
+  display: grid;
+  gap: 3px;
+}
+
+.hero-metric-card span {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #14213d;
+  opacity: 0.7;
+}
+
+.hero-metric-card strong {
+  font-size: 0.88rem;
+  color: #000000;
+}
+
+.login-panel .hero-actions {
+  margin-top: 12px;
+}
+
+.login-visual {
+  background: linear-gradient(165deg, #f7f8fa 0%, #eceff4 100%);
+  display: block;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(20, 33, 61, 0.08), transparent 36%),
+    radial-gradient(
+      circle at 82% 88%,
+      rgba(252, 163, 17, 0.12),
+      transparent 40%
+    );
+}
+
+.login-illustration {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(1.03) contrast(1.01);
+  position: relative;
+  z-index: 1;
 }
 
 .hero-title {
@@ -200,14 +343,14 @@ a {
   color: #14213d;
   line-height: 1.25;
   font-family: "Sora", "Segoe UI", sans-serif;
-  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  font-size: clamp(1.35rem, 2.8vw, 1.7rem);
 }
 
 .ui-card-description {
   margin: 8px 0 0;
-  color: var(--muted-foreground);
+  color: #9099ab;
   line-height: 1.45;
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .ui-card-content {
@@ -271,7 +414,71 @@ a {
 }
 
 .hint-text {
-  color: var(--muted-foreground);
+  color: #9099ab;
+}
+
+.login-panel .hero-copy,
+.empty-state p,
+.register-result-hint,
+.profile-email,
+.recommendation-card p,
+.recommendation-card li {
+  color: #9099ab;
+}
+
+.activity-form {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #e4e9f4;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.activity-form-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.activity-form .form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.activity-form .form-field-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #415a77;
+  font-weight: 700;
+}
+
+.activity-form [data-slot="input"],
+.activity-form [data-slot="select-trigger"] {
+  height: 40px;
+  border-radius: 10px;
+  border-color: #ccd6e7;
+  background: #ffffff;
+}
+
+.activity-form [data-slot="input"]:focus-visible,
+.activity-form [data-slot="select-trigger"]:focus-visible {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.activity-submit-btn {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  margin-top: 2px;
+}
+
+.message-stack {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
 }
 
 .activity-list {
@@ -364,6 +571,245 @@ a {
   padding: 10px 12px;
 }
 
+.activity-recommendations {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.activity-recommendations h3 {
+  margin: 0;
+  color: #14213d;
+  font-family: "Sora", "Segoe UI", sans-serif;
+}
+
+.recommendation-inline-card h4,
+.recommendation-inline-card h5 {
+  margin: 8px 0 6px;
+}
+
+.profile-modern-card {
+  border: 1px solid #eceaf0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafd 100%);
+  box-shadow: 0 14px 30px rgba(20, 33, 61, 0.08);
+  overflow: hidden;
+}
+
+.profile-modern-top {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 26px 16px 18px;
+  background:
+    radial-gradient(circle at 8% 16%, rgba(96, 165, 250, 0.3), transparent 38%),
+    radial-gradient(
+      circle at 90% 6%,
+      rgba(59, 130, 246, 0.22),
+      transparent 30%
+    ),
+    linear-gradient(145deg, #eef6ff 0%, #dbeafe 100%);
+  border-bottom: 1px solid #cfe0fb;
+}
+
+.profile-avatar-image {
+  width: 94px;
+  height: 94px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(29, 78, 137, 0.26);
+}
+
+.profile-full-name {
+  margin: 10px 0 4px;
+  color: #14213d;
+  font-size: 1.25rem;
+  font-family: "Sora", "Segoe UI", sans-serif;
+}
+
+.profile-email {
+  margin: 0;
+  color: #4f5d75;
+  font-size: 0.92rem;
+}
+
+.profile-modern-grid {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.profile-stat-card {
+  margin: 0;
+  border: 1px solid #eceaf0;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.profile-stat-card span {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c7388;
+}
+
+.profile-stat-card strong {
+  color: #14213d;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.register-split-layout {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  min-height: 540px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  background: #f8f8fb;
+  box-shadow: var(--shadow-card);
+}
+
+.register-side-panel {
+  background:
+    radial-gradient(
+      circle at 12% 12%,
+      rgba(255, 255, 255, 0.15),
+      transparent 38%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0,
+      rgba(255, 255, 255, 0.06) 12px,
+      transparent 12px,
+      transparent 24px
+    ),
+    linear-gradient(135deg, #000000 0%, #14213d 100%);
+  color: #ffffff;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 20px;
+}
+
+.register-side-panel h2 {
+  margin: 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+}
+
+.register-side-panel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.register-side-link {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 42px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 140ms ease;
+}
+
+.register-side-link:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.register-form-panel {
+  background: #ffffff;
+  padding: 32px 24px;
+  display: grid;
+  align-content: start;
+  gap: 24px;
+}
+
+.register-form-panel h3 {
+  margin: 0 0 8px 0;
+  color: #14213d;
+  text-align: left;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.register-form {
+  display: grid;
+  gap: 16px;
+}
+
+.register-field {
+  display: grid;
+  gap: 8px;
+}
+
+.register-field-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #14213d;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+}
+
+.register-form [data-slot="input"] {
+  background: #ffffff;
+  border-color: #d7d7d7;
+  color: #000000;
+}
+
+.register-form [data-slot="input"]:focus-visible {
+  border-color: #fca311;
+  box-shadow: 0 0 0 3px rgba(252, 163, 17, 0.18);
+}
+
+.register-submit-btn {
+  margin-top: 12px;
+  height: 44px;
+  border-radius: 10px;
+  background: #14213d;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.register-submit-btn:hover {
+  background: #0f1a31;
+}
+
+.register-result-card {
+  margin-top: 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.register-result-card p {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+
+.register-result-hint {
+  font-size: 0.9rem;
+  color: #555569;
+  line-height: 1.5;
+}
+
 .recommendation-list {
   display: grid;
   gap: 12px;
@@ -407,6 +853,29 @@ a {
   .app-header {
     padding: 18px;
   }
+
+  .login-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .login-visual {
+    min-height: 300px;
+  }
+
+  .login-panel {
+    padding: 26px 20px 28px;
+    border-right: 0;
+  }
+
+  .register-split-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .register-side-panel {
+    min-height: 220px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -445,6 +914,14 @@ a {
 
   .hero-actions [data-slot="button"] {
     flex: 1;
+  }
+
+  .activity-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-modern-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -506,7 +983,7 @@ a {
   --muted-foreground: #e5e5e5;
   --accent: #fca311;
   --accent-foreground: #000000;
-  --destructive: #fca311;
+  --destructive: #f87171;
   --border: rgba(229, 229, 229, 0.25);
   --input: rgba(229, 229, 229, 0.2);
   --ring: #fca311;
